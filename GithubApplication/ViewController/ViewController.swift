@@ -22,6 +22,7 @@ class ViewController: UIViewController {
     private let searchTextField: BaseTextField = {
         let textField = BaseTextField()
         textField.placeholder = "Write username here"
+        textField.autocapitalizationType = .none
         return textField
     }()
     
@@ -84,15 +85,23 @@ class ViewController: UIViewController {
     
     private let followersLabel: UILabel = {
         let label = UILabel()
-        label.text = "9 followers"
+        
+        label.text = "Followers"
         label.textAlignment = .center
+        label.numberOfLines = 0
+        
         label.textColor = .white
         return label
     }()
     
     private let followingLabel: UILabel  = {
         let label = UILabel()
-        label.text = "12 following"
+        
+        label.text = "Following"
+        label.numberOfLines = 0
+        
+        
+        
         label.textColor = .white
         label.textAlignment = .center
         return label
@@ -100,16 +109,29 @@ class ViewController: UIViewController {
     
     private let publicReposLabel: UILabel = {
         let label = UILabel()
-        label.text = "30 public repos"
+        label.text = "Public Repos"
         label.textColor = .white
+        label.numberOfLines = 0
         label.textAlignment = .center
         return label
     }()
-
+    
+    private var viewModel = HomeViewModel.shared
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       setupViews()
+        viewModel.subscribe(self)
+        
+        searchButton.addTarget(self, action: #selector(didSearchButtonTapped), for: .touchUpInside)
+        
+        setupViews()
+    }
+    
+    @objc private func didSearchButtonTapped(){
+        viewModel.getInfo(username: searchTextField.text ?? "")
+        
     }
     
     private func setupViews() {
@@ -150,10 +172,31 @@ class ViewController: UIViewController {
         horizontalStackView.addArrangedSubview(followingLabel)
         horizontalStackView.addArrangedSubview(publicReposLabel)
         
+        
     }
-
-
+    
+    
 }
+
+extension ViewController: HomeViewModelProtocol{
+    func render(state: HomeViewModelState) {
+        switch state {
+        case .loading:
+            print("loading")
+        case .loaded(let userModel):
+            DispatchQueue.main.async {
+                self.usernameLabel.text = userModel.login
+                self.followersLabel.text = "\(userModel.followers) Followers"
+                self.followingLabel.text = "\(userModel.following) Following"
+                self.publicReposLabel.text = "\(userModel.public_repos) Public Repos"
+                print("userModel: ", userModel)
+            }
+        case .failure(let error):
+            print("Error while fetching data: ", error.localizedDescription)
+        }
+    }
+}
+
 
 #Preview{
     ViewController()

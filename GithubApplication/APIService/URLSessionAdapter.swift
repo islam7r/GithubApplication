@@ -15,6 +15,7 @@ class URLSessionAdapter:ApiService{
     func getInfo(username: String, completion: @escaping (Result<UserModel, Error>) -> Void){
         
         
+
         if let url = URL(string: "https://api.github.com/users/\(username)"){
             let request = URLRequest(url: url)
             
@@ -37,6 +38,7 @@ class URLSessionAdapter:ApiService{
             }
             task.resume()
         }
+
         
     }
     

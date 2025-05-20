@@ -52,9 +52,61 @@ class ViewController: UIViewController {
         imageView.backgroundColor = .red
         return imageView
     }()
+    
+    private let usernameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        return label
+    }()
+    private let bioLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Bio"
+        label.textColor = .white
+        return label
+    }()
+    
+    private let bioContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.borderColor = UIColor.white.cgColor
+        view.layer.borderWidth = 1
+        return view
+    }()
+    
+    private let horizontalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private let followersLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        return label
+    }()
+    
+    private let followingLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        return label
+    }()
+    
+    private let publicReposLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       setupViews()
+    }
+    
+    private func setupViews() {
         view.backgroundColor = .black.withAlphaComponent(0.9)
         
         view.addSubview(topVerticalStackView)
@@ -77,7 +129,20 @@ class ViewController: UIViewController {
             make.height.width.equalTo(200)
         }
         ProfileImageView.layer.cornerRadius = 100
-       
+        
+        bioVerticalStackView.addArrangedSubview(usernameLabel)
+        bioVerticalStackView.addArrangedSubview(bioLabel)
+        bioVerticalStackView.addArrangedSubview(bioContainerView)
+        bioContainerView.addSubview(horizontalStackView)
+        horizontalStackView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(16)
+            make.verticalEdges.equalToSuperview().inset(12)
+        }
+        
+        horizontalStackView.addArrangedSubview(followersLabel)
+        horizontalStackView.addArrangedSubview(followingLabel)
+        horizontalStackView.addArrangedSubview(publicReposLabel)
+        
     }
 
 

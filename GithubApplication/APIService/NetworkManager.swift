@@ -18,7 +18,7 @@ class NetworkManager{
     }
     
     
-    func getInfo(userName: String, completion: @escaping (Result<UserModel, Error>) -> Void){
+    func getInfo(username: String, completion: @escaping (Result<UserModel, Error>) -> Void){
         apiService?.getInfo(userName: userName, completion: completion)
     }
     

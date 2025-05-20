@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ApiService{
-    
+    func getInfo(userName: String, completion: @escaping (Result<UserModel, Error>) -> Void)
 }
